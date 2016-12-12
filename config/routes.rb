@@ -5,7 +5,11 @@ Rails.application.routes.draw do
 
   resource :session, only: [:new, :create, :destroy]
 
+  resources :goals
+
   root "sessions#new"
+
+  patch "goals/:id/mark_as_complete", to: 'goals#mark_as_complete'
 
 
 
