@@ -7,5 +7,11 @@ FactoryGirl.define do
       password { Faker::Internet.password(4) }
 
     end
+
+    sequence :goals do
+      [FactoryGirl.build(:goal),
+      FactoryGirl.build(:complete_goal),
+      FactoryGirl.build(:private_goal)]
+    end
   end
 end

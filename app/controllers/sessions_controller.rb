@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
     if @user
       log_in(@user)
-      redirect_to root_url
+      redirect_to user_url(@user)
     else
       flash.now[:errors] = ["Invalid login"]
       render :new

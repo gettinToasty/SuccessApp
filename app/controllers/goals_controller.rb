@@ -1,9 +1,10 @@
 class GoalsController < ApplicationController
 
   before_action :same_author, only: [:update, :edit, :destroy]
+  before_action :see_private, only: [:show]
 
   def index
-    @goals = Goal.where(private: "PUBLIC")
+    @goals = Goal.where(private: "PUBLIC").to_a
   end
 
   def show
@@ -49,11 +50,17 @@ class GoalsController < ApplicationController
   def mark_as_complete
     @goal = Goal.find(params[:id])
     @goal.status = "COMPLETE"
+    @goal.updated_at = Time.now
     @goal.save
     redirect_to user_url(@goal.user)
   end
 
   private
+
+  def see_private
+    @goal = Goal.find(params[:id])
+    redirect_to goals_url unless @goal.private == "PUBLIC" || current_user == @goal.user
+  end
 
   def goal_params
     params.require(:goal).permit(:description, :status, :private)

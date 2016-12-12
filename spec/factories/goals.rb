@@ -3,7 +3,6 @@ FactoryGirl.define do
     private "PUBLIC"
     status "INCOMPLETE"
     description { "#{Faker::Hacker.verb} #{Faker::Hacker.adjective} #{Faker::Hacker.noun}" }
-    user_id 1
 
     factory :private_goal do
       private "PRIVATE"

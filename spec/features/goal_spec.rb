@@ -3,9 +3,9 @@ require 'rails_helper'
 
 feature "user goals" do
   subject(:bob) { FactoryGirl.create(:user) }
-  let(:goal1) { FactoryGirl.create(:goal) }
-  let(:goal2) { FactoryGirl.create(:complete_goal) }
-  let(:goal3) { FactoryGirl.create(:private_goal) }
+  let(:goal1) { bob.goals.first }
+  let(:goal2) { bob.goals[1] }
+  let(:goal3) { bob.goals.last }
 
   feature "when logged in" do
     before(:each) do
@@ -13,8 +13,6 @@ feature "user goals" do
       fill_in("Username", with: bob.username)
       fill_in("Password", with: bob.password)
       click_button("Sign In")
-
-
     end
 
     scenario "displays the user's goals" do
@@ -42,6 +40,7 @@ feature "user goals" do
   end
 
   feature "when not logged in" do
+    before(:each) { visit user_url(bob) }
 
     scenario "displays a user's public goals" do
       expect(page).to have_content("#{bob.username}'s Goals")
@@ -64,6 +63,10 @@ feature "user goals" do
 end
 
 feature "goal index" do
+  subject(:bob) { FactoryGirl.create(:user) }
+  let!(:goal1) { bob.goals.first }
+  let!(:goal2) { bob.goals[1] }
+  let!(:goal3) { bob.goals.last }
 
   scenario "lists all public goals" do
     visit goals_url
@@ -74,6 +77,10 @@ feature "goal index" do
 end
 
 feature "goal show page" do
+  subject(:bob) { FactoryGirl.create(:user) }
+  let(:goal1) { bob.goals.first }
+  let(:goal2) { bob.goals[1] }
+  let(:goal3) { bob.goals.last }
 
   scenario "cannot see a private goal if not the goal's owner" do
     visit goal_url(goal3.id)
