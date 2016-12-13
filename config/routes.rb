@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :goals
 
+  resources :comments, only: [:create, :destroy]
+
   root "sessions#new"
 
   patch "goals/:id/mark_as_complete", to: 'goals#mark_as_complete'

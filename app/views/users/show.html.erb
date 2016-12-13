@@ -25,3 +25,28 @@
     <% end %>
   <% end %>
 </ul>
+
+
+<h2>Comments</h2>
+
+<form action="<%= comments_url %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <input type="hidden" name="comment[commentable_type]" value="<%= User %>">
+  <input type="hidden" name="comment[commentable_id]" value="<%= @user.id %>">
+
+  <label for="">Comment:<textarea name="comment[body]" rows="8" cols="50"></textarea></label>
+
+  <input type="submit" name="" value="Add Comment">
+</form>
+
+<ul>
+  <% @user.comments.each do |comment| %>
+    <li>
+      <h6><%= comment.owner %></h6><br>
+      Posted at:<%= comment.created_at %><br>
+      <%= comment.body %>
+      <%= button_to "Remove Comment", comment_url(comment), method: :delete if current_user == comment.owner %>
+    </li>
+  <% end %>
+</ul>
